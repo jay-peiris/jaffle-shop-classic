@@ -1,82 +1,119 @@
 version: 2
-
 models:
-  - name: customers
-    description: This table has basic information about a customer, as well as some derived facts based on a customer's orders
+- name: customers
+  description: This table has basic information about a customer, as well as some
+    derived facts based on a customer's orders
+  columns:
+  - name: customer_id
+    description: This is a unique identifier for a customer
+    tests:
+    - unique
+    - not_null
+  - name: first_name
+    description: Customer's first name. PII.
+  - name: last_name
+    description: Customer's last name. PII.
+  - name: first_order
+    description: Date (UTC) of a customer's first order
+  - name: most_recent_order
+    description: Date (UTC) of a customer's most recent order
+  - name: number_of_orders
+    description: Count of the number of orders a customer has placed
+  - name: total_order_amount
+    description: Total value (AUD) of a customer's orders
+- name: orders
+  description: This table has basic information about orders, as well as some derived
+    facts based on payments
+  columns:
+    amount:
+      meta: {}
+      name: amount
+      tags: []
+      quote: null
+      data_type: null
+      constraints: []
+      description: Total amount (AUD) of the order
+    status:
+      meta: {}
+      name: status
+      tags: []
+      quote: null
+      data_type: null
+      constraints: []
+      description: 'Orders can be one of the following statuses:
 
-    columns:
-      - name: customer_id
-        description: This is a unique identifier for a customer
-        tests:
-          - unique
-          - not_null
 
-      - name: first_name
-        description: Customer's first name. PII.
+        | status         | description                                                                                                            |
 
-      - name: last_name
-        description: Customer's last name. PII.
+        |----------------|------------------------------------------------------------------------------------------------------------------------|
 
-      - name: first_order
-        description: Date (UTC) of a customer's first order
+        | placed         | The order has been placed but has not yet left the warehouse                                                           |
 
-      - name: most_recent_order
-        description: Date (UTC) of a customer's most recent order
+        | shipped        | The order has ben shipped to the customer and is currently
+        in transit                                                  |
 
-      - name: number_of_orders
-        description: Count of the number of orders a customer has placed
+        | completed      | The order has been received by the customer                                                                            |
 
-      - name: total_order_amount
-        description: Total value (AUD) of a customer's orders
+        | return_pending | The customer has indicated that they would like to return
+        the order, but it has not yet been received at the warehouse |
 
-  - name: orders
-    description: This table has basic information about orders, as well as some derived facts based on payments
-
-    columns:
-      - name: order_id
-        tests:
-          - unique
-          - not_null
-        description: This is a unique identifier for an order
-
-      - name: customer_id
-        description: Foreign key to the customers table
-        tests:
-          - not_null
-          - relationships:
-              to: ref('customers')
-              field: customer_id
-
-      - name: order_date
-        description: Date (UTC) that the order was placed
-
-      - name: status
-        description: '{{ doc("orders_status") }}'
-        tests:
-          - accepted_values:
-              values: ['placed', 'shipped', 'completed', 'return_pending', 'returned']
-
-      - name: amount
-        description: Total amount (AUD) of the order
-        tests:
-          - not_null
-
-      - name: credit_card_amount
-        description: Amount of the order (AUD) paid for by credit card
-        tests:
-          - not_null
-
-      - name: coupon_amount
-        description: Amount of the order (AUD) paid for by coupon
-        tests:
-          - not_null
-
-      - name: bank_transfer_amount
-        description: Amount of the order (AUD) paid for by bank transfer
-        tests:
-          - not_null
-
-      - name: gift_card_amount
-        description: Amount of the order (AUD) paid for by gift card
-        tests:
-          - not_null
+        | returned       | The order has been returned by the customer and received
+        at the warehouse                                              |'
+    order_id:
+      meta: {}
+      name: order_id
+      tags: []
+      quote: null
+      data_type: null
+      constraints: []
+      description: This is a unique identifier for an order
+    order_date:
+      meta: {}
+      name: order_date
+      tags: []
+      quote: null
+      data_type: null
+      constraints: []
+      description: Date (UTC) that the order was placed
+    customer_id:
+      meta: {}
+      name: customer_id
+      tags: []
+      quote: null
+      data_type: null
+      constraints: []
+      description: Foreign key to the customers table
+    coupon_amount:
+      meta: {}
+      name: coupon_amount
+      tags: []
+      quote: null
+      data_type: null
+      constraints: []
+      description: Amount of the order (AUD) paid for by coupon
+    gift_card_amount:
+      meta: {}
+      name: gift_card_amount
+      tags: []
+      quote: null
+      data_type: null
+      constraints: []
+      description: Amount of the order (AUD) paid for by gift card
+    credit_card_amount:
+      meta: {}
+      name: credit_card_amount
+      tags: []
+      quote: null
+      data_type: null
+      constraints: []
+      description: Amount of the order (AUD) paid for by credit card
+    bank_transfer_amount:
+      meta: {}
+      name: bank_transfer_amount
+      tags: []
+      quote: null
+      data_type: null
+      constraints: []
+      description: Amount of the order (AUD) paid for by bank transfer
+  tags: []
+  meta: {}
