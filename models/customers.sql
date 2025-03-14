@@ -23,7 +23,7 @@ customer_orders as (
 
         min(order_date) as first_order,
         max(order_date) as most_recent_order,
-        count(order_id) as number_of_orders
+        count(order_i) as number_of_orders
     from orders
 
     group by customer_id
@@ -39,7 +39,7 @@ customer_payments as (
     from payments
 
     left join orders on
-         payments.order_id = orders.order_id
+         payments.order_i = orders.order_i
 
     group by orders.customer_id
 

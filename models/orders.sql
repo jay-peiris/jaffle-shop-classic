@@ -15,7 +15,7 @@ payments as (
 order_payments as (
 
     select
-        order_id,
+        order_i,
 
         {% for payment_method in payment_methods -%}
         sum(case when payment_method = '{{ payment_method }}' then amount else 0 end) as {{ payment_method }}_amount,
@@ -25,14 +25,14 @@ order_payments as (
 
     from payments
 
-    group by order_id
+    group by order_i
 
 ),
 
 final as (
 
     select
-        orders.order_id,
+        orders.order_i,
         orders.customer_id,
         orders.order_date,
         orders.status,
@@ -49,7 +49,7 @@ final as (
 
 
     left join order_payments
-        on orders.order_id = order_payments.order_id
+        on orders.order_i = order_payments.order_i
 
 )
 
